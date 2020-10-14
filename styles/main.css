@@ -245,4 +245,10 @@ will be correctly compiled during `gulp serve` and `gulp`
  .mdl-demo .mdl-menu__container {
    z-index: 99;
  }
+
+.formulario{
+   display:flex;
+   flex-direction: column;
+   
+ }
  

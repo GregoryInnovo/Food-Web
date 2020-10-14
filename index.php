@@ -1,3 +1,41 @@
+<?php
+	$servidor="localhost";
+	$usuario="root";
+	$clave="Admin_gr3g4ry_x64";
+	$baseDeDatos="persona";
+
+	$enlace = mysqli_connect($servidor, $usuario, $clave, $baseDeDatos);
+
+	if(!$enlace){
+		echo"Error en la conexion con el servidor";
+  }  
+
+ 
+
+
+if(isset($_POST['registrarse'])){
+  
+  $nombre=$_POST["nombre"];
+  $genero=$_POST["genero"];
+  
+
+
+  $insertarDatos = "INSERT INTO usuario (nombre,genero) VALUES('$nombre','$genero')";
+
+  $ejecutarInsertar = mysqli_query($enlace, $insertarDatos);
+
+  if(!$ejecutarInsertar){
+    echo"Error En la linea de sql";
+  }
+
+  header('Location: index.php');
+
+  
+}
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -10,7 +48,26 @@
     <!-- Disable tap highlight on IE -->
     <meta name="msapplication-tap-highlight" content="no" />
 
+     <!-- Disable tap highlight on IE -->
+     <meta name="msapplication-tap-highlight" content="no">
+
     <!-- Web Application Manifest -->
+    <!-- <link rel="manifest" href="manifest.json"> -->
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Web Starter Kit">
+    <link rel="icon" sizes="192x192" href="images/touch/chrome-touch-icon-192x192.png">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Web Starter Kit">
+    <link rel="apple-touch-icon" href="images/touch/apple-touch-icon.png">
+
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
+    <meta name="msapplication-TileColor" content="#2F3BA2">
 
     <!-- Color the status bar on mobile devices -->
     <meta name="theme-color" content="#2F3BA2" />
@@ -49,7 +106,7 @@
       <header class="mdl-layout__header mdl-layout__header--scroll mdl-color--primary">
         <div class="mdl-layout--large-screen-only mdl-layout__header-row"></div>
         <div class="mdl-layout--large-screen-only mdl-layout__header-row">
-          <h3>Pomodoro</h3>
+          <h3>Iniciar</h3>
         </div>
         <div class="mdl-layout--large-screen-only mdl-layout__header-row"></div>
         <div class="mdl-layout__tab-bar mdl-js-ripple-effect mdl-color--primary-dark">
@@ -96,20 +153,30 @@
           </section>
           <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
             <div class="mdl-card mdl-cell mdl-cell--12-col">
-              <form action="">
-                <label for="idc">
-                  <span>Cual es tu id?</span>
-                  <input type="text" id="idc"  placeholder="Tu nombre" name="idc"/>
+
+              <form action="index.php" class="formulario" id="formulario" name="formulario" method="POST" >
+                
+                <label for="nombre" class="section--center mdl-grid">
+                  <span >¿Cuál es tu nombre?</span>
+                  <input type="text" id="nombre" autocomplete="name" placeholder="Tu nombre" name="nombre" required/>
                 </label>
-                <label for="nombre">
-                  <span>Cual es tu nombre?</span>
-                  <input type="text" id="nombre" autocomplete="name" placeholder="Tu nombre"/>
+                <!-- <span >Cual es tu genero?</span>
+                <input list="genero" for="genero" required>
+                
+                <datalist id="genero" class="section--center mdl-grid" >
+                  <option value="Masculino" id="Masculino" name="Masculino"></option>
+                  <option value="Femenino" id="Femenino" name="Femenino"></option>
+                  <option value="Binario" id="Binario" name="Binario"></option>
+                  <option value="Otro" id="Otro" name="Otro"></option>
+                </datalist> -->
+                <label for="genero" class="section--center mdl-grid">
+                  <span>¿Cuál es tu genero?</span>
+                  <input type="text" id="genero" autocomplete="sex" placeholder="Tu genero" name="genero"/>        
+
                 </label>
-                <label for="genero">
-                  <span>Cual es tu genero?</span>
-                  <input type="text" id="genero" autocomplete="sex" placeholder="Tu genero"/>
-                </label>
-                <input type="submit"/>
+                <input type="submit" class="btn" name="registrarse" value="Registrate"/>
+              
+    
               </form>
               
               <div class="mdl-card__actions">
@@ -120,8 +187,51 @@
         </div>
         </section>
       
+
+      <!--  New camara  -->
+          <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
+            <div class="mdl-card mdl-cell mdl-cell--12-col">
+
+              
+            <div id="resultado">Resultado</div>
+            <div id="camera"></div>
+
+            <script src="quagga.min.js"></script>
+
+            <script id="formulario">
+
+                Quagga.init({
+                    inputStream: {
+                        name: "Live",
+                        type: "LiveStream",
+                        target: document.querySelector('#camera')    // Or '#yourElement' (optional)
+                    },
+                    decoder: {
+                        readers: ["ean_reader"]
+                    }
+                }, function (err) {
+                    if (err) {
+                        console.log(err);
+                        return
+                    }
+                    console.log("Initialization finished. Ready to start");
+                    Quagga.start();
+                });
+
+                Quagga.onDetected(function (data) {
+                    console.log(data);
+                    console.log(data.codeResult.code);
+                    document.querySelector('#resultado').innerText = data.codeResult.code;
+                });
+
+            </script>
+              <div class="mdl-card__actions">
+                <a href="https://www.google.com" class="mdl-button">Extra2</a>
+              </div>
+            </div>
+          </section>
       </main>
-      <footer class="mdl-mega-footer">
+      <!-- <footer class="mdl-mega-footer">
         <div class="mdl-mega-footer--middle-section">
           <div class="mdl-mega-footer--drop-down-section">
             <input class="mdl-mega-footer--heading-checkbox" type="checkbox" checked>
@@ -173,7 +283,10 @@
             <li><a href="#">Privacy and Terms</a></li>
           </ul>
         </div>
-      </footer>
+      </footer> -->
     </div>
+
+
   </body>
 </html>
+
