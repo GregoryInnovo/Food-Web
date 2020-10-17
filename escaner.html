@@ -85,53 +85,87 @@ if(isset($_POST['registrarse'])){
 
         <div class="navbar" style="background-color: #333;">
           <a href="index.html">Home</a>
-          <a href="registrar.php">Escaner</a>
+          <a href="escaner.html">Escaner</a>
           <a href="prueba.html">Original</a>
           <a href="#contact">Perfil</a>
         </div>
       </header>
       <main>
           
-      <!--  New camara  -->
-          <section>
-            <div id="forml">
+        <section id="forml">
+           
 
-              
-            <div id="resultado">Resultado</div>
-            <div id="camera"></div>
+          <div>
+              <a class="button" id="startButton" style="font-size:35px;">Start</a>
+              <a class="button" id="resetButton" style="font-size:35px;">Reset</a>
+          </div>
 
-            <script src="quagga.min.js"></script>
+          <div>
+              <video id="video" width="300" height="400" style="border: 1px solid gray"></video>
+          </div>
 
-            <script id="formulario">
+          <div id="sourceSelectPanel" style="display:none">
+              <label for="sourceSelect">Change video source:</label>
+              <select id="sourceSelect" style="max-width:400px">
+              </select>
+          </div>
 
-                Quagga.init({
-                    inputStream: {
-                        name: "Live",
-                        type: "LiveStream",
-                        target: document.querySelector('#camera')    // Or '#yourElement' (optional)
-                    },
-                    decoder: {
-                        readers: ["ean_reader"]
-                    }
-                }, function (err) {
-                    if (err) {
-                        console.log(err);
-                        return
-                    }
-                    console.log("Initialization finished. Ready to start");
-                    Quagga.start();
-                });
+          <label>Result:</label>
+          <pre id="forml" ><code id="result"></code></pre>
 
-                Quagga.onDetected(function (data) {
-                    console.log(data);
-                    console.log(data.codeResult.code);
-                    document.querySelector('#resultado').innerText = data.codeResult.code;
-                });
+          <!-- <p>See the <a href="https://github.com/zxing-js/library/tree/master/docs/examples/barcode-camera/">source code</a>  for this example.</p>
+-->
+        </section>
 
-            </script>
-              
-            </div>
-          </section>
+        <script type="text/javascript" src="https://unpkg.com/@zxing/library@latest"></script>
+          <script type="text/javascript">
+              window.addEventListener('load', function () {
+                  let selectedDeviceId;
+                  const codeReader = new ZXing.BrowserBarcodeReader()
+                  console.log('ZXing code reader initialized')
+                  codeReader.getVideoInputDevices()
+                      .then((videoInputDevices) => {
+                          const sourceSelect = document.getElementById('sourceSelect')
+                          selectedDeviceId = videoInputDevices[0].deviceId
+                          if (videoInputDevices.length > 1) {
+                              videoInputDevices.forEach((element) => {
+                                  const sourceOption = document.createElement('option')
+                                  sourceOption.text = element.label
+                                  sourceOption.value = element.deviceId
+                                  sourceSelect.appendChild(sourceOption)
+                              })
+
+                              sourceSelect.onchange = () => {
+                                  selectedDeviceId = sourceSelect.value;
+                              }
+
+                              const sourceSelectPanel = document.getElementById('sourceSelectPanel')
+                              sourceSelectPanel.style.display = 'block'
+                          }
+
+                          document.getElementById('startButton').addEventListener('click', () => {
+                              codeReader.decodeOnceFromVideoDevice(selectedDeviceId, 'video').then((result) => {
+                                  console.log(result)
+                                  document.getElementById('result').textContent = result.text
+                              }).catch((err) => {
+                                  console.error(err)
+                                  document.getElementById('result').textContent = err
+                              })
+                              console.log(`Started continous decode from camera with id ${selectedDeviceId}`)
+                          })
+
+                          document.getElementById('resetButton').addEventListener('click', () => {
+                              document.getElementById('result').textContent = '';
+                              codeReader.reset();
+                              console.log('Reset.')
+                          })
+
+                      })
+                      .catch((err) => {
+                          console.error(err)
+                      })
+              })
+          </script>
 
 
           <section>

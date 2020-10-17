@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foodhy Registrarse</title>
+
+    <link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+
+    <main>
+        <section>
+            <form action="../paginas/signin.html" class="center-text"  name="formulario" method="POST" >
+                <!-- Primer Nombre -->
+                <label for="nombre1">
+                  <span >¿Cuál es tu primer nombre?</span>
+                  <input type="text" id="nombre1" autocomplete="name" placeholder="Primer Nombre" name="nombre1" required/>
+                </label>
+             
+                <!-- Segundo Nombre -->
+                <label for="nombre2">
+                    <span >¿Cuál es tu segundo nombre? (Opcional)</span>
+                    <input type="text" id="nombre2" autocomplete="name" placeholder="Segundo Nombre" name="nombre2"/>
+                </label>
+
+                <!-- Primer Apellido -->
+                <label for="apellido1">
+                    <span >¿Cuál es tu primer apellido?</span>
+                    <input type="text" id="apellido1" autocomplete="family-name" placeholder="Primer apellido" name="apellido1" required/>
+                </label>
+
+                <!-- Segundo Apellido -->
+                <label for="apellido2">
+                    <span >¿Cuál es tu segundo apellido? (Opcional)</span>
+                    <input type="text" id="apellido2" autocomplete="family-name" placeholder="Segundo apellido" name="apellido2"/>
+                </label>
+
+                <!-- Fecha nacimiento -->
+                <label for="fechanacimiento">
+                    <span >¿Cuál es tu cumpleaños?</span>
+                    <input type="date" id="fechanacimiento" name="fechanacimiento" required/>
+                </label>
+
+                <!-- Foto de perfil -->
+                <label for="fotoperfil">
+                    <span >Foto de perfil</span>
+                    <input type="file" id="fotoperfil" name="fotoperfil"/>
+                </label>
+
+                <!-- Descripcion -->
+                <label for="descripcion">
+                    <span >Escribe una descripción (opcional)</span>
+                    <input type="text" id="descripcion"  placeholder="Descríbete" name="descripcion" required/>
+                </label>
+
+                <!-- Contraseña -->
+                <label for="password">
+                    <span >Escribe una contraseña</span>
+                    <input type="password" id="password" name="password" required/>
+                </label>
+
+                <!-- Nickname -->
+                <label for="alias">
+                    <span >Escribe un apodo</span>
+                    <input type="text" id="alias" autocomplete="nickname" name="alias" required/>
+                </label>
+
+                
+                <label for="genero">
+                  <span>¿Cuál es tu genero?</span>
+                  <input type="text" id="genero" placeholder="Género" name="genero"/ required>        
+                </label>
+
+
+
+                <input type="submit" class="btn" name="registrarse" value="Registrate"/>
+              
+    
+              </form>
+              
+        </section>
+    </main>
+    
+</body>
+</html>
